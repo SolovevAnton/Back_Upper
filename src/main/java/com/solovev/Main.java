@@ -1,10 +1,9 @@
 package com.solovev;
 
 import com.solovev.model.Configuration;
-import com.solovev.repository.FilesRepo;
+import com.solovev.model.BackUpMaker;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class Main {
@@ -15,8 +14,8 @@ public class Main {
         Configuration conf = new Configuration(testingFolder);
         conf.setRootDirToStoreBackUps(storingFolderRoot);
 
-        FilesRepo repo = new FilesRepo(conf);
-        System.out.println(repo);
+        BackUpMaker repo = new BackUpMaker(conf);
+        repo.doBackUp();
 
     }
 }
