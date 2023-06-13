@@ -7,28 +7,28 @@ import java.util.Objects;
  * Class to store config for every folder that needs to be backUpped
  */
 public class Configuration {
-    private static final Path DIR_LAST_REPLACED_BACKUP = Path.of("last_replaced_backup");
-    private final Path pathToFiles;
+    private static final Path DIR_LAST_REPLACED_BACKUP_NAME = Path.of("last_replaced_backup");
+    private final Path targetDir; //cannot be same as rootSave and check for existence
     private Path rootDirToStoreBackUps = Path.of(System.getProperty("user.dir")).toAbsolutePath();
     private int numberOfBackups = 1; // default is 1 and cannot be less than 1
     private String backUpSubDirs = "Back_up"; //must be a dir
 
     public Configuration() {
-        this.pathToFiles = Path.of("").toAbsolutePath(); // default will not work
+        this.targetDir = Path.of("").toAbsolutePath(); // default will not work
     }
 
     public Configuration(Path pathToBackUp) {
-        this.pathToFiles = pathToBackUp.toAbsolutePath();
+        this.targetDir = pathToBackUp.toAbsolutePath();
     }
-    //toDo add data check
+    //toDo add data check 1. backUp cannot be same as target
     public Configuration(Path pathToBackUp, Path rootDirToSave, int numberOfBackups, String backUpDirName) {
-        this.pathToFiles = pathToBackUp.toAbsolutePath();
+        this.targetDir = pathToBackUp.toAbsolutePath();
         this.rootDirToStoreBackUps = rootDirToSave.toAbsolutePath();
         this.numberOfBackups = numberOfBackups;
         this.backUpSubDirs = backUpDirName;
     }
-    public Path getPathToFiles() {
-        return pathToFiles;
+    public Path getTargetDir() {
+        return targetDir;
     }
 
     public Path getRootDirToStoreBackUps() {
@@ -63,7 +63,7 @@ public class Configuration {
         Configuration that = (Configuration) o;
 
         if (numberOfBackups != that.numberOfBackups) return false;
-        if (!pathToFiles.equals(that.pathToFiles)) return false;
+        if (!targetDir.equals(that.targetDir)) return false;
         if (!Objects.equals(rootDirToStoreBackUps, that.rootDirToStoreBackUps))
             return false;
         return Objects.equals(backUpSubDirs, that.backUpSubDirs);
@@ -71,7 +71,7 @@ public class Configuration {
 
     @Override
     public int hashCode() {
-        int result = pathToFiles.hashCode();
+        int result = targetDir.hashCode();
         result = 31 * result + (rootDirToStoreBackUps != null ? rootDirToStoreBackUps.hashCode() : 0);
         result = 31 * result + numberOfBackups;
         result = 31 * result + (backUpSubDirs != null ? backUpSubDirs.hashCode() : 0);
@@ -81,7 +81,7 @@ public class Configuration {
     @Override
     public String toString() {
         return "Configuration{" +
-                "pathToFiles=" + pathToFiles +
+                "pathToFiles=" + targetDir +
                 ", rootDirToStoreBackUps=" + rootDirToStoreBackUps +
                 ", numberOfBackups=" + numberOfBackups +
                 ", backUpSubDirs='" + backUpSubDirs + '\'' +

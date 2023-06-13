@@ -5,13 +5,12 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 
 public class BackUpMaker {
     private final Configuration config;
     private final SavingSubDirsManager savingDirsManager;
 
-    public BackUpMaker(Configuration config) throws IOException {
+    public BackUpMaker(Configuration config) {
         this.config = config;
         savingDirsManager = new SavingSubDirsManager(config);
 
@@ -26,10 +25,10 @@ public class BackUpMaker {
         createAndClean(savingSubDirectory);
 
         //save depend on if it is file or dir
-        if (Files.isDirectory(config.getPathToFiles())) {
-            FileUtils.copyDirectory(config.getPathToFiles().toFile(), savingSubDirectory);
+        if (Files.isDirectory(config.getTargetDir())) {
+            FileUtils.copyDirectory(config.getTargetDir().toFile(), savingSubDirectory);
         } else {
-            FileUtils.copyFileToDirectory(config.getPathToFiles().toFile(), savingSubDirectory);
+            FileUtils.copyFileToDirectory(config.getTargetDir().toFile(), savingSubDirectory);
         }
     }
 
@@ -50,10 +49,7 @@ public class BackUpMaker {
      * @return path to the subdir to save back_ups
      */
     private File savingSubDirectory() {
-        Path backUpSubDir = Path.of(config.getBackUpSubDirs());
-        return config.getRootDirToStoreBackUps()
-                .resolve(backUpSubDir)
-                .toFile();
+        return savingDirsManager.getBackUpDir().toFile();
     }
 
     @Override

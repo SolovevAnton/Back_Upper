@@ -8,14 +8,14 @@ import java.nio.file.Path;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        Path testingFolder = Path.of("TestFolder");
-        Path storingFolderRoot = Path.of("SaveFolder");
+        Path testingFolder = Path.of("C:","Users","Anton","iCloudDrive","iCloud~md~obsidian");
+        Path storingFolderRoot = Path.of("D:\\Temp","SavingData");
 
         Configuration conf = new Configuration(testingFolder);
         conf.setRootDirToStoreBackUps(storingFolderRoot);
 
-        BackUpMaker repo = new BackUpMaker(conf);
-
+        BackUpMaker maker = new BackUpMaker(conf);
+        maker.doBackUp();
 
     }
 }
