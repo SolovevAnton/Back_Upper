@@ -10,7 +10,7 @@ public class Configuration {
     private static final Path DIR_LAST_REPLACED_BACKUP = Path.of("last_replaced_backup");
     private final Path pathToFiles;
     private Path rootDirToStoreBackUps = Path.of(System.getProperty("user.dir")).toAbsolutePath();
-    private int numberOfBackups = 1; // default is 1
+    private int numberOfBackups = 1; // default is 1 and cannot be less than 1
     private String backUpSubDirs = "Back_up"; //must be a dir
 
     public Configuration() {
@@ -20,14 +20,13 @@ public class Configuration {
     public Configuration(Path pathToBackUp) {
         this.pathToFiles = pathToBackUp.toAbsolutePath();
     }
-
+    //toDo add data check
     public Configuration(Path pathToBackUp, Path rootDirToSave, int numberOfBackups, String backUpDirName) {
         this.pathToFiles = pathToBackUp.toAbsolutePath();
         this.rootDirToStoreBackUps = rootDirToSave.toAbsolutePath();
         this.numberOfBackups = numberOfBackups;
         this.backUpSubDirs = backUpDirName;
     }
-
     public Path getPathToFiles() {
         return pathToFiles;
     }

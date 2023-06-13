@@ -15,7 +15,7 @@ public class Main {
         conf.setRootDirToStoreBackUps(storingFolderRoot);
 
         BackUpMaker repo = new BackUpMaker(conf);
-        repo.doBackUp();
+
 
     }
 }

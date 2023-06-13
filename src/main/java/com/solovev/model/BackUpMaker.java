@@ -9,11 +9,14 @@ import java.nio.file.Path;
 
 public class BackUpMaker {
     private final Configuration config;
+    private final SavingSubDirsManager savingDirsManager;
 
     public BackUpMaker(Configuration config) throws IOException {
         this.config = config;
-    }
+        savingDirsManager = new SavingSubDirsManager(config);
 
+    }
+    //toDo add last replaced backUp
 
     /**
      * Creates backUp folder, if not created, and saves all files with dirs from paths to it
