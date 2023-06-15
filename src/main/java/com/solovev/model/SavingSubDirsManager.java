@@ -5,6 +5,7 @@ import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayDeque;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Queue;
 import java.util.stream.Collectors;
@@ -76,5 +77,29 @@ public class SavingSubDirsManager {
                 .stream()
                 .filter(Files::exists)
                 .collect(Collectors.toCollection(ArrayDeque::new));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SavingSubDirsManager that = (SavingSubDirsManager) o;
+        return Objects.equals(name, that.name) && Objects.equals(dirNameForLastReplacedBackUp, that.dirNameForLastReplacedBackUp) && Objects.equals(subDirs, that.subDirs) && Objects.equals(config, that.config) && Objects.equals(localDateTimePattern, that.localDateTimePattern);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, dirNameForLastReplacedBackUp, subDirs, config, localDateTimePattern);
+    }
+
+    @Override
+    public String toString() {
+        return "SavingSubDirsManager{" +
+                "name='" + name + '\'' +
+                ", dirNameForLastReplacedBackUp=" + dirNameForLastReplacedBackUp +
+                ", subDirs=" + subDirs +
+                ", config=" + config +
+                ", localDateTimePattern=" + localDateTimePattern +
+                '}';
     }
 }
