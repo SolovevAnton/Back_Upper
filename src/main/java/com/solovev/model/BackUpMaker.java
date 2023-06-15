@@ -10,15 +10,16 @@ public class BackUpMaker {
     private final Configuration config;
     private final SavingSubDirsManager savingDirsManager;
 
-    public BackUpMaker(Configuration config) {
-        this.config = config;
-        savingDirsManager = new SavingSubDirsManager(config);
+    public BackUpMaker(SavingSubDirsManager savingSubDirsManager) {
+        this.config = savingSubDirsManager.getConfig();
+        savingDirsManager = savingSubDirsManager;
 
     }
     //toDo add last replaced backUp
 
     /**
      * Creates backUp folder, if not created, and saves all files with dirs from paths to it
+     * Note when this method is called, dirsManager updates its backUp Queue
      */
     public void doBackUp() throws IOException {
         File savingSubDirectory = savingSubDirectory();

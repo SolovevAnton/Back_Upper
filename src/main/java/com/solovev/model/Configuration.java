@@ -7,7 +7,6 @@ import java.util.Objects;
  * Class to store config for every folder that needs to be backUpped
  */
 public class Configuration {
-    private static final Path DIR_LAST_REPLACED_BACKUP_NAME = Path.of("last_replaced_backup");
     private final Path targetDir; //cannot be same as rootSave and check for existence
     private Path rootDirToStoreBackUps = Path.of(System.getProperty("user.dir")).toAbsolutePath();
     private int numberOfBackups = 1; // default is 1 and cannot be less than 1

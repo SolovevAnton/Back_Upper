@@ -10,14 +10,23 @@ import java.util.Queue;
 import java.util.stream.Collectors;
 
 /**
- * class stores in file the subdir names for back up
+ * class stores in file the subdir names for back up, and contains config
+ * This class is done to be serialized to store the state of the backUps
  */
 public class SavingSubDirsManager {
+    private String name;
+    private final Path dirNameForLastReplacedBackUp = Path.of("last_replaced_backup");
+    //Queue of already done backUps. gets updated, when new dir name is requested
     private Queue<Path> subDirs = new ArrayDeque<>();
     private final Configuration config;
     private final DateTimeFormatter localDateTimePattern = DateTimeFormatter.ofPattern("_yyyy_MM_dd_HHmm");
 
-    public SavingSubDirsManager(Configuration config) {
+    public SavingSubDirsManager() {
+        this.name = "Default";
+        config = new Configuration();
+    }
+
+    public SavingSubDirsManager(String name, Configuration config) {
         this.config = config;
     }
 
@@ -53,6 +62,10 @@ public class SavingSubDirsManager {
         return subDirs.size() == config.getNumberOfBackups()
                 ? Optional.of(subDirs.peek())
                 : Optional.empty();
+    }
+
+    public Configuration getConfig() {
+        return config;
     }
 
     /**
