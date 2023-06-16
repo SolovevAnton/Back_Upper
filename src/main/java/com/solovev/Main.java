@@ -1,15 +1,13 @@
 package com.solovev;
 
-import com.solovev.model.Configuration;
 import com.solovev.model.BackUpMaker;
+import com.solovev.model.Configuration;
 import com.solovev.model.SavingSubDirsManager;
 import com.solovev.repository.ManagersRepo;
 import com.solovev.util.Constants;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws IOException {

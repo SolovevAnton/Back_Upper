@@ -1,6 +1,5 @@
 package com.solovev.model;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.nio.file.Files;
@@ -68,9 +67,10 @@ public class SavingSubDirsManager {
 
     /**
      * Method shows path to be replaced next, or empty optional if que is not full after actualization
+     *
      * @return Path to replace or empty optional
      */
-    public Optional<Path> peekPathToReplace(){
+    public Optional<Path> peekPathToReplace() {
         actualize();
         return subDirs.size() == config.getNumberOfBackups()
                 ? Optional.of(subDirs.peek())
@@ -110,6 +110,7 @@ public class SavingSubDirsManager {
     /**
      * Note formatter is removed from equals, since doesn't have proper equals code, as well as subDirs;
      * SubDirs are removed also because the same state managers cannot have different history
+     *
      * @param o object to compare
      * @return true if objects are logically the same
      */
