@@ -13,7 +13,6 @@ public class BackUpMaker {
     public BackUpMaker(SavingSubDirsManager savingSubDirsManager) {
         this.config = savingSubDirsManager.getConfig();
         savingDirsManager = savingSubDirsManager;
-
     }
     //toDo add last replaced backUp
 

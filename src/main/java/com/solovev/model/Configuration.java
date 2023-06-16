@@ -58,23 +58,13 @@ public class Configuration {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Configuration that = (Configuration) o;
-
-        if (numberOfBackups != that.numberOfBackups) return false;
-        if (!targetDir.equals(that.targetDir)) return false;
-        if (!Objects.equals(rootDirToStoreBackUps, that.rootDirToStoreBackUps))
-            return false;
-        return Objects.equals(backUpSubDirs, that.backUpSubDirs);
+        return numberOfBackups == that.numberOfBackups && Objects.equals(targetDir, that.targetDir) && Objects.equals(rootDirToStoreBackUps, that.rootDirToStoreBackUps) && Objects.equals(backUpSubDirs, that.backUpSubDirs);
     }
 
     @Override
     public int hashCode() {
-        int result = targetDir.hashCode();
-        result = 31 * result + (rootDirToStoreBackUps != null ? rootDirToStoreBackUps.hashCode() : 0);
-        result = 31 * result + numberOfBackups;
-        result = 31 * result + (backUpSubDirs != null ? backUpSubDirs.hashCode() : 0);
-        return result;
+        return Objects.hash(targetDir, rootDirToStoreBackUps, numberOfBackups, backUpSubDirs);
     }
 
     @Override

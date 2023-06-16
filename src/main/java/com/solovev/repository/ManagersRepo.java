@@ -4,8 +4,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.solovev.model.SavingSubDirsManager;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,15 +16,21 @@ public class ManagersRepo {
     private Set<SavingSubDirsManager> managers = new HashSet<>();
     ObjectMapper objectMapper = new ObjectMapper();
 
+    public ManagersRepo() {
+    }
+
     /**
-     * Reads array of managers from file with Json format
+     * Reads array of managers from path with Json format
      *
-     * @param file file to read from
+     * @param path path to read from
      * @throws IOException if an I/O error occurs
      */
-    public ManagersRepo(File file) throws IOException {
-        managers = objectMapper.readValue(file, new TypeReference<>() {
-        });
+    public ManagersRepo(Path path) throws IOException {
+        //check if file is empty
+        if(path.toFile().length() > 0) {
+            managers = objectMapper.readValue(path.toFile(), new TypeReference<>() {
+            });
+        }
     }
 
     /**
@@ -38,13 +44,13 @@ public class ManagersRepo {
     }
 
     /**
-     * Saves all objects from repo to the file
+     * Saves all objects from repo to the folder with the path named : save
      *
-     * @param file to save all objects from repo
+     * @param path to save all objects from repo
      * @throws IOException if an I/O error occurs
      */
-    public void save(File file) throws IOException {
-        objectMapper.writeValue(file, managers);
+    public void save(Path path) throws IOException {
+        objectMapper.writeValue(path.toFile(), managers);
     }
 
     public Set<SavingSubDirsManager> getManagers() {
