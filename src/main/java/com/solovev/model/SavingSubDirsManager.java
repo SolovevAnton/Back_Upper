@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
  */
 public class SavingSubDirsManager {
     private String name;
+    @JsonIgnore
     private final Path dirNameForLastReplacedBackUp = Path.of("last_replaced_backup");
 
     //Queue of already done backUps. gets updated, when new dir name is requested
@@ -95,6 +96,10 @@ public class SavingSubDirsManager {
 
     public void setSubDirs(Queue<Path> subDirs) {
         this.subDirs = subDirs;
+    }
+
+    public Path getDirNameForLastReplacedBackUp() {
+        return dirNameForLastReplacedBackUp;
     }
 
     /**

@@ -5,6 +5,9 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 public class BackUpMaker {
     private final Configuration config;
@@ -18,17 +21,45 @@ public class BackUpMaker {
 
     /**
      * Creates backUp folder, if not created, and saves all files with dirs from paths to it
-     * Note when this method is called, dirsManager updates its backUp Queue
+     * Note when this method is called, dirsManager updates its backUp Queue;
+     * Last backUp is put to the folder of the last_removedBackUp
      */
     public void doBackUp() throws IOException {
-        File savingSubDirectory = savingSubDirectory();
-        createAndClean(savingSubDirectory);
+        //move the backUp to replace to the last removed folder
+        moveLastBackUp();
 
-        //save depend on if it is file or dir
+        //updates manager and gets new sub dir to save fresh backUp
+        File savingSubDirectory = savingSubDirectory();
+        createOrClean(savingSubDirectory);
+
+        //Copying depend on if it is file or dir
         if (Files.isDirectory(config.getTargetDir())) {
-            FileUtils.copyDirectory(config.getTargetDir().toFile(), savingSubDirectory);
+            FileUtils.copyDirectoryToDirectory(config.getTargetDir().toFile(), savingSubDirectory);
         } else {
             FileUtils.copyFileToDirectory(config.getTargetDir().toFile(), savingSubDirectory);
+        }
+    }
+
+    /**
+     * Moves back up to be replaced (if any) to the specified folder in the manager
+     */
+
+    private void moveLastBackUp() throws IOException {
+
+        Optional<Path> backUpToReplace = savingDirsManager.peekPathToReplace();
+
+        if (backUpToReplace.isPresent()) {
+
+            File directoryToStoreLastBackUp = config.getRootDirToStoreBackUps()
+                    .resolve(savingDirsManager.getDirNameForLastReplacedBackUp())
+                    .toAbsolutePath()
+                    .toFile();
+
+            createOrClean(directoryToStoreLastBackUp);
+
+            FileUtils.moveDirectoryToDirectory(backUpToReplace.get().toFile(),
+                    directoryToStoreLastBackUp,
+                    false);
         }
     }
 
@@ -37,7 +68,7 @@ public class BackUpMaker {
      *
      * @param directory to clean or create
      */
-    private void createAndClean(File directory) throws IOException {
+    private void createOrClean(File directory) throws IOException {
         if (!directory.mkdirs()) {
             FileUtils.cleanDirectory(directory);
         }
