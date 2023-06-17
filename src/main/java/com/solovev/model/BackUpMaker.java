@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 public class BackUpMaker {
     private final Configuration config;
@@ -17,12 +16,12 @@ public class BackUpMaker {
         this.config = savingSubDirsManager.getConfig();
         savingDirsManager = savingSubDirsManager;
     }
-    //toDo add last replaced backUp
 
     /**
      * Creates backUp folder, if not created, and saves all files with dirs from paths to it
      * Note when this method is called, dirsManager updates its backUp Queue;
      * Last backUp is put to the folder of the last_removedBackUp
+     * @throws IOException if an I/O error occurs
      */
     public void doBackUp() throws IOException {
         //move the backUp to replace to the last removed folder

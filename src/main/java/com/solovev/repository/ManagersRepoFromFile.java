@@ -6,18 +6,17 @@ import com.solovev.model.SavingSubDirsManager;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
  * Repository for reading and writing subDirs managers
  */
-public class ManagersRepo {
+public class ManagersRepoFromFile implements ManagersRepoInterface {
     private Set<SavingSubDirsManager> managers = new HashSet<>();
-    ObjectMapper objectMapper = new ObjectMapper();
-
-    public ManagersRepo() {
-    }
+    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final Path pathToSFileToSaveState;
 
     /**
      * Reads array of managers from path with Json format
@@ -25,9 +24,10 @@ public class ManagersRepo {
      * @param path path to read from
      * @throws IOException if an I/O error occurs
      */
-    public ManagersRepo(Path path) throws IOException {
+    public ManagersRepoFromFile(Path path) throws IOException {
+        pathToSFileToSaveState = path.toAbsolutePath();
         //check if file is empty
-        if(path.toFile().length() > 0) {
+        if (path.toFile().length() > 0) {
             managers = objectMapper.readValue(path.toFile(), new TypeReference<>() {
             });
         }
@@ -44,16 +44,18 @@ public class ManagersRepo {
     }
 
     /**
-     * Saves all objects from repo to the folder with the path named : save
+     * Saves all objects from repo to the folder with the path that was used to create repo
      *
-     * @param path to save all objects from repo
      * @throws IOException if an I/O error occurs
      */
-    public void save(Path path) throws IOException {
-        objectMapper.writeValue(path.toFile(), managers);
+    public void save() throws IOException {
+
+        objectMapper.writeValue(pathToSFileToSaveState.toFile(), managers);
     }
 
-    public Set<SavingSubDirsManager> getManagers() {
+    @Override
+    public Collection<SavingSubDirsManager> getData() {
         return managers;
     }
 }
+

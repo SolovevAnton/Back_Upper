@@ -1,9 +1,9 @@
 package com.solovev;
 
-import com.solovev.model.BackUpMaker;
 import com.solovev.model.Configuration;
 import com.solovev.model.SavingSubDirsManager;
-import com.solovev.repository.ManagersRepo;
+import com.solovev.repository.ManagersRepoFromFile;
+import com.solovev.util.BackUpMakers;
 import com.solovev.util.Constants;
 
 import java.io.IOException;
@@ -19,21 +19,10 @@ public class Main {
 
         SavingSubDirsManager savingSubDirsManager = new SavingSubDirsManager("Test", conf);
 
-        ManagersRepo repo = new ManagersRepo(Constants.SAVE_JSON.getPath());
-        repo.add(savingSubDirsManager);
+        ManagersRepoFromFile repo = new ManagersRepoFromFile(Constants.SAVE_JSON.getPath());
+       // repo.add(savingSubDirsManager);
 
-        repo
-                .getManagers()
-                .stream()
-                .forEach(manager -> {
-                    try {
-                        new BackUpMaker(manager).doBackUp();
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                });
-
-        repo.save(Constants.SAVE_JSON.getPath());
+        BackUpMakers.doBackUps(repo);
 
     }
 }
